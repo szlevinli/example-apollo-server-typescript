@@ -9,15 +9,19 @@
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "apollo-datasource": "^0.7.2",
     "apollo-datasource-rest": "^0.9.5",
     "apollo-server": "^2.15.0",
-    "graphql": "^15.1.0"
+    "graphql": "^15.1.0",
+    "isemail": "^3.2.0",
+    "sequelize": "^6.3.5"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^2.0.1",
     "@graphql-codegen/cli": "1.19.1",
     "@graphql-codegen/typescript": "^1.17.11",
     "@graphql-codegen/typescript-resolvers": "^1.17.10",
+    "@types/sequelize": "^4.28.9",
     "@typescript-eslint/eslint-plugin": "^3.5.0",
     "@typescript-eslint/parser": "^3.5.0",
     "apollo": "^2.28.3",
