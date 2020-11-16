@@ -860,6 +860,17 @@ apollo-codegen-typescript@^0.37.3:
     common-tags "^1.5.1"
     inflected "^2.0.3"
 
+apollo-datasource-rest@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.npm.taobao.org/apollo-datasource-rest/download/apollo-datasource-rest-0.9.5.tgz#38febbf23ad2d427c40c79a59ade5766cabba16b"
+  integrity sha1-OP678jrS1CfEDHmlmt5XZsq7oWs=
+  dependencies:
+    apollo-datasource "^0.7.2"
+    apollo-server-caching "^0.5.2"
+    apollo-server-env "^2.4.5"
+    apollo-server-errors "^2.4.2"
+    http-cache-semantics "^4.0.0"
+
 apollo-datasource@^0.7.0, apollo-datasource@^0.7.1:
   version "0.7.1"
   resolved "https://registry.npm.taobao.org/apollo-datasource/download/apollo-datasource-0.7.1.tgz?cache=0&sync_timestamp=1590590381750&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fapollo-datasource%2Fdownload%2Fapollo-datasource-0.7.1.tgz#0b06da999ace50b7f5fe509f2a03f7de97974334"
@@ -867,6 +878,14 @@ apollo-datasource@^0.7.0, apollo-datasource@^0.7.1:
   dependencies:
     apollo-server-caching "^0.5.1"
     apollo-server-env "^2.4.4"
+
+apollo-datasource@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.npm.taobao.org/apollo-datasource/download/apollo-datasource-0.7.2.tgz#1662ee93453a9b89af6f73ce561bde46b41ebf31"
+  integrity sha1-FmLuk0U6m4mvb3POVhveRrQevzE=
+  dependencies:
+    apollo-server-caching "^0.5.2"
+    apollo-server-env "^2.4.5"
 
 apollo-engine-reporting-protobuf@^0.5.1:
   version "0.5.1"
@@ -991,6 +1010,13 @@ apollo-server-caching@^0.5.1:
   dependencies:
     lru-cache "^5.0.0"
 
+apollo-server-caching@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.npm.taobao.org/apollo-server-caching/download/apollo-server-caching-0.5.2.tgz?cache=0&sync_timestamp=1597250299468&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fapollo-server-caching%2Fdownload%2Fapollo-server-caching-0.5.2.tgz#bef5d5e0d48473a454927a66b7bb947a0b6eb13e"
+  integrity sha1-vvXV4NSEc6RUknpmt7uUegtusT4=
+  dependencies:
+    lru-cache "^5.0.0"
+
 apollo-server-core@^2.15.0:
   version "2.15.0"
   resolved "https://registry.npm.taobao.org/apollo-server-core/download/apollo-server-core-2.15.0.tgz?cache=0&sync_timestamp=1592413318849&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fapollo-server-core%2Fdownload%2Fapollo-server-core-2.15.0.tgz#a9c19028b76e7ca90a759b4421556ba7625df1d9"
@@ -1027,10 +1053,23 @@ apollo-server-env@^2.4.4:
     node-fetch "^2.1.2"
     util.promisify "^1.0.0"
 
+apollo-server-env@^2.4.5:
+  version "2.4.5"
+  resolved "https://registry.npm.taobao.org/apollo-server-env/download/apollo-server-env-2.4.5.tgz#73730b4f0439094a2272a9d0caa4079d4b661d5f"
+  integrity sha1-c3MLTwQ5CUoicqnQyqQHnUtmHV8=
+  dependencies:
+    node-fetch "^2.1.2"
+    util.promisify "^1.0.0"
+
 apollo-server-errors@^2.0.2, apollo-server-errors@^2.4.1:
   version "2.4.1"
   resolved "https://registry.npm.taobao.org/apollo-server-errors/download/apollo-server-errors-2.4.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fapollo-server-errors%2Fdownload%2Fapollo-server-errors-2.4.1.tgz#16ad49de6c9134bfb2b7dede9842e73bb239dbe2"
   integrity sha1-Fq1J3myRNL+yt97emELnO7I52+I=
+
+apollo-server-errors@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.npm.taobao.org/apollo-server-errors/download/apollo-server-errors-2.4.2.tgz#1128738a1d14da989f58420896d70524784eabe5"
+  integrity sha1-EShzih0U2pifWEIIltcFJHhOq+U=
 
 apollo-server-express@^2.15.0:
   version "2.15.0"
