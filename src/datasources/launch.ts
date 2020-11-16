@@ -1,6 +1,6 @@
 import { RESTDataSource } from 'apollo-datasource-rest';
 
-import { ILaunchFromRemote, ILaunch } from '../types';
+import { LaunchFromRemote, LaunchReducer } from '../types';
 
 class LaunchAPI extends RESTDataSource {
   constructor() {
@@ -8,14 +8,14 @@ class LaunchAPI extends RESTDataSource {
     this.baseURL = 'https://api.spacexdata.com/v2/';
   }
 
-  async getAllLaunches(): Promise<ILaunch[]> {
-    const response = await this.get<ILaunchFromRemote[]>('launches');
+  async getAllLaunches(): Promise<LaunchReducer[]> {
+    const response = await this.get<LaunchFromRemote[]>('launches');
     return Array.isArray(response)
       ? response.map((launch) => this.launchReducer(launch))
       : [];
   }
 
-  launchReducer(launch: ILaunchFromRemote): ILaunch {
+  launchReducer(launch: LaunchFromRemote): LaunchReducer {
     return {
       id: launch.flight_number || 0,
       cursor: `${launch.launch_date_unix}`,
@@ -36,9 +36,9 @@ class LaunchAPI extends RESTDataSource {
   async getLaunchById({
     launchId,
   }: {
-    launchId: Pick<ILaunch, 'id'>;
-  }): Promise<ILaunch> {
-    const response = await this.get<ILaunchFromRemote[]>('launches', {
+    launchId: Pick<LaunchReducer, 'id'>;
+  }): Promise<LaunchReducer> {
+    const response = await this.get<LaunchFromRemote[]>('launches', {
       flight_number: launchId,
     });
     return this.launchReducer(response[0]);
@@ -47,8 +47,8 @@ class LaunchAPI extends RESTDataSource {
   async getLaunchesByIds({
     launchIds,
   }: {
-    launchIds: Pick<ILaunch, 'id'>[];
-  }): Promise<ILaunch[]> {
+    launchIds: Pick<LaunchReducer, 'id'>[];
+  }): Promise<LaunchReducer[]> {
     return Promise.all(
       launchIds.map((launchId) => this.getLaunchById({ launchId }))
     );

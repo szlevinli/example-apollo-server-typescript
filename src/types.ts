@@ -1,4 +1,4 @@
-export interface ILaunchFromRemote {
+export interface LaunchFromRemote {
   flight_number: number;
   launch_date_unix: string;
   launch_site: {
@@ -16,22 +16,18 @@ export interface ILaunchFromRemote {
   };
 }
 
-export interface IMission {
-  name: string;
-  missionPatchSmall: string;
-  missionPatchLarge: string;
-}
-
-export interface IRocket {
-  id: string;
-  name: string;
-  type: string;
-}
-
-export interface ILaunch {
+export interface LaunchReducer {
   id: number;
   cursor: string;
   site: string;
-  mission: IMission;
-  rocket: IRocket;
+  mission: {
+    name: string;
+    missionPatchSmall: string;
+    missionPatchLarge: string;
+  };
+  rocket: {
+    id: string;
+    name: string;
+    type: string;
+  };
 }
