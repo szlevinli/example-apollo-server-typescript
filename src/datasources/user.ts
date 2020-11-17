@@ -1,12 +1,11 @@
 import { DataSource, DataSourceConfig } from 'apollo-datasource';
-import sequelize from '../../node_modules/@types/sequelize';
 import isEmail from 'isemail';
 
-import { Store, User, Trip } from '../utils';
+import { Store, UserAttributes, TripAttributes } from '../utils';
 import { Launch } from '../generated/graphql';
 
-interface UserAPIContext {
-  user: User;
+export interface UserAPIContext {
+  user: UserAttributes;
 }
 
 class UserAPI extends DataSource<UserAPIContext> {
@@ -25,7 +24,7 @@ class UserAPI extends DataSource<UserAPIContext> {
 
   async findOrCreateUser(
     { email: emailArg } = { email: '' }
-  ): Promise<sequelize.Instance<User> | null> {
+  ): Promise<UserAttributes | null> {
     const email = this.context?.user?.email || emailArg;
     if (!email || !isEmail.validate(email as string)) return null;
 
@@ -33,14 +32,14 @@ class UserAPI extends DataSource<UserAPIContext> {
       where: { email },
     });
 
-    return success ? user : null;
+    return success ? user.get() : null;
   }
 
   async bookTrip({
     launchId,
   }: {
     launchId: Launch['id'];
-  }): Promise<Trip | null> {
+  }): Promise<TripAttributes | null> {
     const userId = this.context?.user.id;
     const [trip, success] = await this.store.trips.findOrCreate({
       where: { userId, launchId },
@@ -51,11 +50,11 @@ class UserAPI extends DataSource<UserAPIContext> {
 
   async bookTrips(
     { launchIds } = { launchIds: new Array<Launch['id']>() }
-  ): Promise<Trip[] | null> {
+  ): Promise<TripAttributes[] | null> {
     const userId = this.context?.user.id;
     if (!userId) return null;
 
-    const results = new Array<Trip>();
+    const results = new Array<TripAttributes>();
 
     for (const launchId of launchIds) {
       const res = await this.bookTrip({ launchId });
@@ -74,7 +73,7 @@ class UserAPI extends DataSource<UserAPIContext> {
     });
   }
 
-  async getLaunchIdsByUser(): Promise<sequelize.DataTypeInteger[]> {
+  async getLaunchIdsByUser(): Promise<number[]> {
     const userId = this.context?.user.id;
     const found = await this.store.trips.findAll({
       where: { userId },
