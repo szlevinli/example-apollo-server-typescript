@@ -13,6 +13,7 @@
     "apollo-datasource-rest": "^0.9.5",
     "apollo-server": "^2.15.0",
     "graphql": "^15.1.0",
+    "graphql-tools": "^7.0.1",
     "isemail": "^3.2.0",
     "sequelize": "^6.3.5",
     "sqlite3": "^5.0.0"
