@@ -16,18 +16,22 @@ export interface LaunchFromRemote {
   };
 }
 
+export interface Mission {
+  name: string;
+  missionPatchSmall: string;
+  missionPatchLarge: string;
+}
+
+export interface Rocket {
+  id: string;
+  name: string;
+  type: string;
+}
+
 export interface LaunchReducer {
   id: number;
   cursor: string;
   site: string;
-  mission: {
-    name: string;
-    missionPatchSmall: string;
-    missionPatchLarge: string;
-  };
-  rocket: {
-    id: string;
-    name: string;
-    type: string;
-  };
+  mission: Mission;
+  rocket: Rocket;
 }

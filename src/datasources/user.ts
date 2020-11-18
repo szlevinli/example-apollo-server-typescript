@@ -3,6 +3,7 @@ import isEmail from 'isemail';
 
 import { Store, UserAttributes, TripAttributes } from '../utils';
 import { Launch } from '../generated/graphql';
+import { LaunchReducer } from '../types';
 
 export interface UserAPIContext {
   user: UserAttributes;
@@ -85,7 +86,7 @@ class UserAPI extends DataSource<UserAPIContext> {
   async isBookedOnLaunch({
     launchId,
   }: {
-    launchId: Launch['id'];
+    launchId: LaunchReducer['id'];
   }): Promise<boolean> {
     if (!this.context || !this.context.user) return false;
     const userId = this.context.user.id;

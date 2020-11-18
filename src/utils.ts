@@ -1,11 +1,4 @@
-import { Sequelize, Op, Optional, Model, DataTypes } from 'sequelize';
-
-// export const paginateResults = ({
-//   after: cursor,
-//   pageSize = 20,
-//   results,
-//   getCursor = () => null
-// }) => {};
+import { Sequelize, Optional, Model, DataTypes } from 'sequelize';
 
 const sequelize = new Sequelize('database', 'username', 'password', {
   dialect: 'sqlite',
@@ -101,4 +94,44 @@ export const createStore = (): Store => {
     users: User,
     trips: Trip,
   };
+};
+
+// ======================= Pagination ========================
+
+interface Args<CursorType, ResultType> {
+  after: CursorType;
+  pageSize: number;
+  results: Array<ResultType>;
+  getCursor?: (item: ResultType) => CursorType;
+}
+
+interface PaginateResults {
+  <CursorType, ResultType extends { cursor?: CursorType }>(
+    args: Args<CursorType, ResultType>
+  ): Array<ResultType>;
+}
+
+export const paginateResults: PaginateResults = ({
+  after: cursor,
+  pageSize = 20,
+  results,
+  getCursor = () => null,
+}) => {
+  if (pageSize < 1) return [];
+
+  if (!cursor) return results.slice(0, pageSize);
+
+  const cursorIndex = results.findIndex((item) => {
+    const itemCursor = item.cursor ? item.cursor : getCursor(item);
+    return itemCursor ? cursor === itemCursor : false;
+  });
+
+  return cursorIndex >= 0
+    ? cursorIndex === results.length - 1
+      ? []
+      : results.slice(
+          cursorIndex + 1,
+          Math.min(results.length, cursorIndex + 1 + pageSize)
+        )
+    : results.slice(0, pageSize);
 };

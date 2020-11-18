@@ -36,7 +36,7 @@ class LaunchAPI extends RESTDataSource {
   async getLaunchById({
     launchId,
   }: {
-    launchId: Pick<LaunchReducer, 'id'>;
+    launchId: LaunchReducer['id'];
   }): Promise<LaunchReducer> {
     const response = await this.get<LaunchFromRemote[]>('launches', {
       flight_number: launchId,
@@ -47,7 +47,7 @@ class LaunchAPI extends RESTDataSource {
   async getLaunchesByIds({
     launchIds,
   }: {
-    launchIds: Pick<LaunchReducer, 'id'>[];
+    launchIds: LaunchReducer['id'][];
   }): Promise<LaunchReducer[]> {
     return Promise.all(
       launchIds.map((launchId) => this.getLaunchById({ launchId }))

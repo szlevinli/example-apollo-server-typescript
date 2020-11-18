@@ -10,6 +10,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };
 
@@ -54,6 +55,18 @@ export type TripUpdateResponse = {
   launches?: Maybe<Array<Maybe<Launch>>>;
 };
 
+/**
+ * Simple wrapper around our list of launches that contains a cursor to the
+ * last item in the list. Pass this cursor to the launches query to  fetch
+ * result after these.
+ */
+export type LaunchConnection = {
+  __typename?: 'LaunchConnection';
+  cursor: Scalars['String'];
+  hasMore: Scalars['Boolean'];
+  launches: Array<Maybe<Launch>>;
+};
+
 export enum PatchSize {
   Small = 'SMALL',
   Large = 'LARGE'
@@ -61,9 +74,15 @@ export enum PatchSize {
 
 export type Query = {
   __typename?: 'Query';
-  launches: Array<Maybe<Launch>>;
+  launches: LaunchConnection;
   launch?: Maybe<Launch>;
   me?: Maybe<User>;
+};
+
+
+export type QueryLaunchesArgs = {
+  pageSize?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
 };
 
 
@@ -185,8 +204,10 @@ export type ResolversTypes = {
   User: ResolverTypeWrapper<User>;
   Mission: ResolverTypeWrapper<Mission>;
   TripUpdateResponse: ResolverTypeWrapper<TripUpdateResponse>;
+  LaunchConnection: ResolverTypeWrapper<LaunchConnection>;
   PatchSize: PatchSize;
   Query: ResolverTypeWrapper<{}>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   CacheControlScope: CacheControlScope;
   Upload: ResolverTypeWrapper<Scalars['Upload']>;
@@ -202,7 +223,9 @@ export type ResolversParentTypes = {
   User: User;
   Mission: Mission;
   TripUpdateResponse: TripUpdateResponse;
+  LaunchConnection: LaunchConnection;
   Query: {};
+  Int: Scalars['Int'];
   Mutation: {};
   Upload: Scalars['Upload'];
 };
@@ -243,8 +266,15 @@ export type TripUpdateResponseResolvers<ContextType = any, ParentType extends Re
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type LaunchConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['LaunchConnection'] = ResolversParentTypes['LaunchConnection']> = {
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  hasMore?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   launches?: Resolver<Array<Maybe<ResolversTypes['Launch']>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  launches?: Resolver<ResolversTypes['LaunchConnection'], ParentType, ContextType, RequireFields<QueryLaunchesArgs, never>>;
   launch?: Resolver<Maybe<ResolversTypes['Launch']>, ParentType, ContextType, RequireFields<QueryLaunchArgs, 'id'>>;
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
@@ -265,6 +295,7 @@ export type Resolvers<ContextType = any> = {
   User?: UserResolvers<ContextType>;
   Mission?: MissionResolvers<ContextType>;
   TripUpdateResponse?: TripUpdateResponseResolvers<ContextType>;
+  LaunchConnection?: LaunchConnectionResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Upload?: GraphQLScalarType;
