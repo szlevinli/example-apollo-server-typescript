@@ -4,14 +4,11 @@ import isEmail from 'isemail';
 import { Store, UserAttributes, TripAttributes } from '../utils';
 import { Launch } from '../generated/graphql';
 import { LaunchReducer } from '../types';
+import { ContextType } from '../index';
 
-export interface UserAPIContext {
-  user: UserAttributes;
-}
-
-class UserAPI extends DataSource<UserAPIContext> {
+class UserAPI extends DataSource<ContextType> {
   store: Store;
-  context: UserAPIContext | null;
+  context: ContextType | null;
 
   constructor({ store }: { store: Store }) {
     super();
@@ -19,7 +16,7 @@ class UserAPI extends DataSource<UserAPIContext> {
     this.context = null;
   }
 
-  initialize(config: DataSourceConfig<UserAPIContext>): void {
+  initialize(config: DataSourceConfig<ContextType>): void {
     this.context = config.context;
   }
 
@@ -29,11 +26,11 @@ class UserAPI extends DataSource<UserAPIContext> {
     const email = this.context?.user?.email || emailArg;
     if (!email || !isEmail.validate(email as string)) return null;
 
-    const [user, success] = await this.store.users.findOrCreate({
+    const [user] = await this.store.users.findOrCreate({
       where: { email },
     });
 
-    return success ? user.get() : null;
+    return user ? user.get() : null;
   }
 
   async bookTrip({
@@ -41,18 +38,19 @@ class UserAPI extends DataSource<UserAPIContext> {
   }: {
     launchId: Launch['id'];
   }): Promise<TripAttributes | null> {
-    const userId = this.context?.user.id;
-    const [trip, success] = await this.store.trips.findOrCreate({
+    const userId = this.context?.user?.id;
+    if (!userId) return null;
+    const [trip] = await this.store.trips.findOrCreate({
       where: { userId, launchId },
     });
 
-    return success ? trip.get() : null;
+    return trip ? trip.get() : null;
   }
 
   async bookTrips(
     { launchIds } = { launchIds: new Array<Launch['id']>() }
   ): Promise<TripAttributes[] | null> {
-    const userId = this.context?.user.id;
+    const userId = this.context?.user?.id;
     if (!userId) return null;
 
     const results = new Array<TripAttributes>();
@@ -66,7 +64,7 @@ class UserAPI extends DataSource<UserAPIContext> {
   }
 
   async cancelTrip({ launchId }: { launchId: Launch['id'] }): Promise<boolean> {
-    const userId = this.context?.user.id;
+    const userId = this.context?.user?.id;
     if (!userId) return false;
 
     return !!this.store.trips.destroy({
@@ -74,13 +72,13 @@ class UserAPI extends DataSource<UserAPIContext> {
     });
   }
 
-  async getLaunchIdsByUser(): Promise<number[]> {
-    const userId = this.context?.user.id;
+  async getLaunchIdsByUser(): Promise<string[]> {
+    const userId = this.context?.user?.id;
     const found = await this.store.trips.findAll({
       where: { userId },
     });
 
-    return found.map((l) => l.get().id).filter((l) => !!l);
+    return found.map((l) => l.get().launchId).filter((l) => !!l);
   }
 
   async isBookedOnLaunch({

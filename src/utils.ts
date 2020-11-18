@@ -27,7 +27,7 @@ export class User
 
 export interface TripAttributes {
   id: number;
-  launchId: number;
+  launchId: string;
   userId: UserAttributes['id'];
 }
 
@@ -37,7 +37,7 @@ export class Trip
   extends Model<TripAttributes, TripCreationAttributes>
   implements TripAttributes {
   public id!: number;
-  public launchId!: number;
+  public launchId!: string;
   public userId!: number;
 
   public readonly createdAt!: Date;
@@ -89,6 +89,8 @@ export const createStore = (): Store => {
     },
     { sequelize, tableName: 'trip' }
   );
+
+  sequelize.sync();
 
   return {
     users: User,

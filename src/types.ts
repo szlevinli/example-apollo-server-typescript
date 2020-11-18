@@ -1,5 +1,5 @@
 export interface LaunchFromRemote {
-  flight_number: number;
+  flight_number: string;
   launch_date_unix: string;
   launch_site: {
     site_name: string;
@@ -29,7 +29,7 @@ export interface Rocket {
 }
 
 export interface LaunchReducer {
-  id: number;
+  id: string;
   cursor: string;
   site: string;
   mission: Mission;

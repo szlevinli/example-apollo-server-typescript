@@ -1,4 +1,5 @@
 import { IFieldResolver } from 'apollo-server';
+import { intersectionWith } from 'lodash';
 
 import LaunchAPI from './datasources/launch';
 import UserAPI from './datasources/user';
@@ -75,6 +76,65 @@ const tripsFieldResolver: IFieldResolver<
   return dataSources.launchAPI.getLaunchesByIds({ launchIds });
 };
 
+const loginFieldResolver: IFieldResolver<
+  unknown,
+  ContextType,
+  { email: string }
+> = async (_, { email }, { dataSources }) => {
+  const user = await dataSources.userAPI.findOrCreateUser({ email });
+
+  if (user) return Buffer.from(email).toString('base64');
+};
+
+const bookTripsFieldResolver: IFieldResolver<
+  unknown,
+  ContextType,
+  { launchIds: string[] }
+> = async (_, { launchIds }, { dataSources }) => {
+  const results = await dataSources.userAPI.bookTrips({ launchIds });
+  const launches = await dataSources.launchAPI.getLaunchesByIds({ launchIds });
+
+  const ret = {
+    success: (results && results.length === launchIds.length) || false,
+    message:
+      results && results.length === launchIds.length
+        ? 'trips booked successfully'
+        : `the following launches couldn't be booked: ${
+            !results
+              ? launchIds
+              : intersectionWith(
+                  launchIds,
+                  results,
+                  (launchId, result) => launchId === result.launchId
+                )
+          }`,
+    launches,
+  };
+
+  return ret;
+};
+
+const cancelTripFieldResolver: IFieldResolver<
+  unknown,
+  ContextType,
+  { launchId: string }
+> = async (_, { launchId }, { dataSources }) => {
+  const result = await dataSources.userAPI.cancelTrip({ launchId });
+
+  if (!result)
+    return {
+      success: false,
+      message: `failed to cancel trip`,
+    };
+
+  const launch = await dataSources.launchAPI.getLaunchById({ launchId });
+  return {
+    success: true,
+    message: 'trip cancelled',
+    launches: [launch],
+  };
+};
+
 const resolvers = {
   Query: {
     launches: launchesFieldResolver,
@@ -89,6 +149,11 @@ const resolvers = {
   },
   User: {
     trips: tripsFieldResolver,
+  },
+  Mutation: {
+    login: loginFieldResolver,
+    bookTrips: bookTripsFieldResolver,
+    cancelTrip: cancelTripFieldResolver,
   },
 };
 
