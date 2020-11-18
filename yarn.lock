@@ -1532,6 +1532,11 @@
   resolved "https://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.165.tgz?cache=0&sync_timestamp=1604600854786&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Flodash%2Fdownload%2F%40types%2Flodash-4.14.165.tgz#74d55d947452e2de0742bad65270433b63a8c30f"
   integrity sha1-dNVdlHRS4t4HQrrWUnBDO2Ooww8=
 
+"@types/lodash@^4.14.165":
+  version "4.14.165"
+  resolved "https://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.165.tgz#74d55d947452e2de0742bad65270433b63a8c30f"
+  integrity sha1-dNVdlHRS4t4HQrrWUnBDO2Ooww8=
+
 "@types/long@^4.0.0":
   version "4.0.1"
   resolved "https://registry.npm.taobao.org/@types/long/download/@types/long-4.0.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Flong%2Fdownload%2F%40types%2Flong-4.0.1.tgz#459c65fa1867dafe6a8f322c4c51695663cc55e9"
